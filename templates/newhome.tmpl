@@ -1,0 +1,171 @@
+<!--newhome.tmpl-->
+<html>
+<head>
+<title>myDiab @sznurawa.pl </title>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" 
+integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- table pagination -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+<!-- highcharts -->
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" src="/js/themes/gray.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript" class="init">
+
+if (!String.prototype.trim) { (function() {
+//make sure we trim BOM and NBSP
+var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+return this.replace(rtrim, '')
+};
+} ) ();
+};
+$(document).ready(function() {
+$('#example').DataTable({order: [[0, "desc"]]});
+var hdata = data.map(function(obj) {
+return {y: obj.Results.trim(), x: obj.DateT.trim()};
+});
+// previously ('#example').DataTable();
+// var myChart = Highcharts.chart('container', {
+$('#container').highcharts({
+chart: {
+type: 'line'
+},
+title: {
+text: 'Results'
+},
+xAxis: {
+categories: hdata.map(function(obj){return obj.x;})
+},
+yAxis: {
+title: {
+text: 'Results'
+}
+},
+plotOptions: {
+line: {
+dataLabels: {
+enabled: true
+},
+enableMouseTracking: false
+}
+},
+series: [{
+name: 'Glucose monitoring results, units: mg/dl',
+data: hdata.map(function(obj){return parseFloat(obj.y);})
+}]
+});
+});
+</scritpt>
+<link rel="stylesheet" href="styles/style.css">
+<script type="text/javascript">
+var data = <TMPL_VAR NAME=JSROWS>;
+</script>
+</head>
+<body>
+<div id="top" class="global-nav-bar">
+<p id="okoo" class="oko"> myDiab </p>
+</div>
+<div id="top+1" class="global-image">
+<image src="images/cover6.jpg" width="100%>
+</div>
+<nav class="navbar navbar-default navbar-fixed-top">
+<div id="top+2" class="container22">
+<div id="top+2+4" class="global-menu-bar-4">
+</div>
+<div id="top+2+1" class="global-menu-bar-1">
+<br>
+<form action="gar.pl" method="POST">
+<select name="myselect" id="myselect" onchange="this.form.submit()">
+<otpioan value="" disabled select>Please select results </options>
+<option value="1"> MORNING </option>
+<option value="2"> LUNCHTIME </option>
+<option value="3"> AFTERNOON </option>
+<option value="4"> SUPPER </option>
+<option value="5"> NIGHT </option>
+<option value="6"> GLYCATED HEMOGLOBIN </option>
+<option value="6"> GLYCATED HEMOGLOBIN </option>
+<option value="7"> BACK TO HOME </option>
+</select>
+</form>
+</div>
+<!-- cookies alert>
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+</div>
+-->
+<div id="top+2+3" class="global-menu-bar-3">
+</div>
+<div id="top+2+2" class="global-menu-bar-2">
+<p><TMPL_VAR NAME="GREETING"> <TMPL_VAR NAME="USER"></p>
+<p><form action="ustawienia.pl" method="POST">
+<select name="ustawienia" id="ustawienia" onchange="this.form.submit()"?>
+<option value="" disabled select> MORE </option>
+<option value="1"> Patient Check </option>
+<option value="2"> Settings </option>
+<option value="3"> Logout </option>
+</select>
+</form>
+</p>
+</div>
+</div>
+</nav>
+<div id="main" class="main-display">
+<br>
+<p style="font-size:14px"> <TMPL_VAR NAME="MESSAGE"></p>
+<div id="container" style="width:100%; height:400px;"></div>
+</div>
+<div id="tabela" class="table1">
+<nav>
+<table id="example" style="font-family:verdana; font-size:12px;" class="table table-striped table-bordered dataTable">
+<thead>
+<tr role="row">
+<th tabindex="0" style="width: 137px;">Date</th>
+<th tabindex="0" style="width: 219px;">Result</th>
+</tr>
+<TMPL_LOOP NAME=ROWS>
+<tr>
+<td><TMPL_VAR NAME=DATET></td>
+<td><TMPL_VAR NAME=RESULTS></td>
+</tr>
+</TMPL_LOOP>
+</table>
+</nav>
+</div>
+<!--available for next items  customization -->
+<!--<div id="container33" class="container33"></div>-->
+<!--<div id="container44" class="container44"></div>-->
+<!--<div id="container55" class="container55"></div>-->
+<!--<div id="container66" class="container66"></div>-->
+<!--<div id="container77" class="container77"></div>-->
+<!--<div id="container88" class="container88"></div>-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
